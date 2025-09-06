@@ -57,6 +57,26 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Luxury Real Estate Colors
+        "navy-deep": "hsl(var(--navy-deep))",
+        "navy-light": "hsl(var(--navy-light))",
+        "gold-primary": "hsl(var(--gold-primary))",
+        "gold-light": "hsl(var(--gold-light))",
+        cream: "hsl(var(--cream))",
+        charcoal: "hsl(var(--charcoal))",
+      },
+      backgroundImage: {
+        "gradient-luxury": "var(--gradient-luxury)",
+        "gradient-gold": "var(--gradient-gold)",
+        "gradient-hero": "var(--gradient-hero)",
+      },
+      boxShadow: {
+        luxury: "var(--shadow-luxury)",
+        gold: "var(--shadow-gold)",
+        card: "var(--shadow-card)",
+      },
+      transitionProperty: {
+        luxury: "var(--transition-luxury)",
       },
       borderRadius: {
         lg: "var(--radius)",
