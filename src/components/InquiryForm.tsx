@@ -1,6 +1,6 @@
 // src/components/InquiryForm.tsx
 import { useState } from "react";
-import { Send, User, Mail, Phone, MessageSquare, Home } from "lucide-react";
+import { Send, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,8 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
-// 🔥 Firestore imports
-import { db } from "@/lib/firebase";
+// ✅ Firestore imports (modular style)
+import { db } from "@/lib/firebase"; // make sure this file exports `db` from getFirestore(app)
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 interface InquiryFormProps {
@@ -33,7 +33,7 @@ export const InquiryForm = ({ propertyId, propertyTitle }: InquiryFormProps) => 
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // ✅ Validation
+  // ✅ Form validation
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.name.trim()) newErrors.name = "Name is required";
@@ -42,9 +42,7 @@ export const InquiryForm = ({ propertyId, propertyTitle }: InquiryFormProps) => 
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Please enter a valid email";
     }
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    }
+    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
     if (!formData.inquiryType) newErrors.inquiryType = "Please select an inquiry type";
     if (!formData.message.trim() || formData.message.length < 10) {
       newErrors.message = "Message must be at least 10 characters";
@@ -53,7 +51,7 @@ export const InquiryForm = ({ propertyId, propertyTitle }: InquiryFormProps) => 
     return Object.keys(newErrors).length === 0;
   };
 
-  // ✅ Submit to Firestore
+  // ✅ Firestore submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) {
@@ -103,9 +101,7 @@ export const InquiryForm = ({ propertyId, propertyTitle }: InquiryFormProps) => 
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }));
-    }
+    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
   return (
@@ -122,10 +118,22 @@ export const InquiryForm = ({ propertyId, propertyTitle }: InquiryFormProps) => 
         )}
       </DialogHeader>
 
-      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Inputs here (same as your original form)... */}
-        {/* Submit button */}
+        {/* Example: Name Input */}
+        <div>
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            value={formData.name}
+            onChange={(e) => handleInputChange("name", e.target.value)}
+            placeholder="Your name"
+            required
+          />
+          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+        </div>
+
+        {/* Add other fields similarly: email, phone, inquiryType, message, budget, preferredContact */}
+
         <Button type="submit" className="w-full btn-luxury" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : <><Send className="w-4 h-4 mr-2" /> Send Inquiry</>}
         </Button>
