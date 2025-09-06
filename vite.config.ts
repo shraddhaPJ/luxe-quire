@@ -1,14 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  optimizeDeps: {
-    include: ["firebase/app", "firebase/firestore", "firebase/analytics"]
-  },
-  build: {
-    rollupOptions: {
-      external: [], // don't externalize firebase modules
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
     },
   },
 });
